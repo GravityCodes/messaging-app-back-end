@@ -1,3 +1,3 @@
-const getUser = async (req, res) => {
-    res.send(200).json({msg:"User"});
-}
+import user from "./user.js";
+
+export default {user};
