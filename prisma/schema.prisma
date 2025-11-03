@@ -13,3 +13,23 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  password           String
+  profilePicture     String?
+  banner             String?
+  messagesSent       Message[] @relation("MessagesSent")
+  MessagesReceived   Message[] @relation("MessagesReceived")
+} 
+
+model Message {
+  id         Int      @id  @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  fromUser   User     @relation("MessagesSent", fields: [fromUserId], references: [id])
+  fromUserId Int
+  toUser     User     @relation("MessagesReceived", fields: [toUserId], references: [id])
+  toUserId   Int
+}
