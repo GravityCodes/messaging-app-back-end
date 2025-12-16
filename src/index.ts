@@ -20,10 +20,8 @@ app.get("/", (req, res) => {
   res.status(200).json({ msg: "okay" });
 });
 
-
 io.on("connection", (socket) => {
   console.log("a user connected");
 });
-
 
 httpServer.listen(port, () => console.log("Listening on port:", port));
