@@ -1,6 +1,12 @@
 import { body } from "express-validator";
 import { PrismaClient } from "../generated/prisma/client.js";
-const prisma = new PrismaClient();
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const prisma = new PrismaClient({ adapter });
 
 const createUser = [
   body("userName").trim().notEmpty().withMessage("User name must not be empty"),
