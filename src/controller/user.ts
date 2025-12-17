@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import validator from "../validator/user.js";
 import { validationResult } from "express-validator";
+import { hashPassword } from "../utils/password.js";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 const adapter = new PrismaPg({
@@ -28,14 +29,17 @@ const signupUser = [
       }
 
       const { userName, email, password } = req.body;
+      const hashedPassword = await hashPassword(password);
 
       const user = await prisma.user.create({
         data: {
           userName,
           email,
-          password,
+          password: hashedPassword,
         },
       });
+      
+      return res.status(201).json({msg: "New user created succesfully"});
     } catch (error) {
       console.error(error);
       return res.status(500).json({
