@@ -4,8 +4,14 @@ import { validationResult } from "express-validator";
 import { hashPassword } from "../utils/password.js";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
+
+const databaseUrl =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_DATABASE_URL
+    : process.env.DATABASE_URL;
+
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: databaseUrl,
 });
 
 const prisma = new PrismaClient({ adapter });
@@ -38,8 +44,8 @@ const signupUser = [
           password: hashedPassword,
         },
       });
-      
-      return res.status(201).json({msg: "New user created succesfully"});
+
+      return res.status(201).json({ msg: "New user created succesfully" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
