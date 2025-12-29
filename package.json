@@ -10,11 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/GravityCodes/messaging-app-back-end.git"
   },
+  "type": "module",
   "license": "ISC",
   "author": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest",
+    "test": "vitest",
     "build": "NODE_ENV=dev tsc",
     "start": "node dist/src/index.js"
   },
@@ -22,7 +23,6 @@
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@types/cors": "^2.8.19",
-    "@types/jest": "^30.0.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -30,18 +30,17 @@
     "express-validator": "^7.3.0",
     "jsonwebtoken": "^9.0.3",
     "prisma": "^7.2.0",
-    "socket.io": "^4.8.1",
-    "ts-jest": "^29.4.6"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
     "@tsconfig/node20": "^20.1.8",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.5",
     "@types/node": "^24.9.1",
-    "jest": "^30.2.0",
+    "@types/supertest": "^6.0.3",
     "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   }
 }
