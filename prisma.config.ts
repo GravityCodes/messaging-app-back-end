@@ -1,13 +1,17 @@
-import { defineConfig, env } from "prisma/config";
 import "dotenv/config";
+import type { PrismaConfig } from "prisma";
 
-export default defineConfig({
+const databaseUrl =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_DATABASE_URL
+    : process.env.DATABASE_URL;
+
+export default {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
-  engine: "classic",
   datasource: {
-    url: env("DATABASE_URL"),
+    url: databaseUrl,
   },
-});
+} satisfies PrismaConfig;
