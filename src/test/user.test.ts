@@ -1,19 +1,23 @@
-import app from "../app";
-import express from "express";
-// import request from "supertest";
+import { expect, test } from 'vitest';
+import app from "../app.js";
+import request from "supertest";
+
 
 const newUser = {
-    userName: "JohanM",
-    email: "Johan.mesa2001@gmail.com",
-    password: "Pa$$word#1",
-    passwordConfirmation: "Pas$$word#1"
+  userName: "JohanM",
+  email: "test@gmail.com",
+  password: "Pa$$word#1",
+  passwordConfirmation: "Pa$$word#1"
 }
 
-describe("User Route", () => {
-}
-
-test('object assignment', () => {
-    expect(2+2).toBe(4);
+test('truthy resolves to true', () => {
+  expect(true).toBe(true);
 });
 
+test("user gets created", async () => {
+  const res = await request(app)
+    .post('/user/signup')
+    .send(newUser)
 
+  expect(res.status).toBe(201);
+})
