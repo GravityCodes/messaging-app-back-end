@@ -2,19 +2,8 @@ import type { Request, Response } from "express";
 import validator from "../validator/user.js";
 import { validationResult } from "express-validator";
 import { hashPassword } from "../utils/password.js";
-import { PrismaClient } from "../generated/prisma/client.js";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { prisma } from "../lib/prisma.js";
 
-const databaseUrl =
-  process.env.NODE_ENV === "test"
-    ? process.env.TEST_DATABASE_URL
-    : process.env.DATABASE_URL;
-
-const adapter = new PrismaPg({
-  connectionString: databaseUrl,
-});
-
-const prisma = new PrismaClient({ adapter });
 
 const getUser = async (req: Request, res: Response) => {
   res.send(200).json({ msg: "User" });
@@ -24,6 +13,7 @@ const loginUser = async (req: Request, res: Response) => {
   //Login user.
 };
 
+
 const signupUser = [
   validator.createUser,
   async (req: Request, res: Response) => {
@@ -31,6 +21,7 @@ const signupUser = [
       const result = validationResult(req);
 
       if (!result.isEmpty()) {
+        console.error(result.array());
         return res.status(400).json({ errors: result.array() });
       }
 
