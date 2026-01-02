@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../generated/prisma/client.js";
 
-class Repository {
+export class Repository {
   async createUser(
     userName: string,
     email: string,
@@ -18,5 +18,3 @@ class Repository {
     return user;
   }
 }
-
-export default Repository;
