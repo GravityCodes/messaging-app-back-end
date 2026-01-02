@@ -1,6 +1,7 @@
-import { expect, test } from "vitest";
+import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import app from "../app.js";
 import request from "supertest";
+import { prisma } from "../lib/prisma.js";
 
 const newUser = {
   userName: "JohanM",
@@ -14,9 +15,22 @@ test("truthy resolves to true", () => {
 });
 
 // TODO: Add unit testing
+describe("User Route Integration Test", () => {
+  beforeAll(async () => {
+    if (process.env.NODE_ENV === "test") {
+      await prisma.$executeRawUnsafe(
+        `TRUNCATE TABLE "User" RESTART IDENTITY CASCADE;`,
+      );
+    }
+  });
 
-test("user gets created", async () => {
-  const res = await request(app).post("/user/signup").send(newUser);
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
 
-  expect(res.status).toBe(201);
+  test("user gets created", async () => {
+    const res = await request(app).post("/user/signup").send(newUser);
+
+    expect(res.status).toBe(201);
+  });
 });
