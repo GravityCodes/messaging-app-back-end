@@ -4,7 +4,6 @@ import { validationResult } from "express-validator";
 import { hashPassword } from "../utils/password.js";
 import { prisma } from "../lib/prisma.js";
 
-
 const getUser = async (req: Request, res: Response) => {
   res.send(200).json({ msg: "User" });
 };
@@ -12,7 +11,6 @@ const getUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
   //Login user.
 };
-
 
 const signupUser = [
   validator.createUser,
