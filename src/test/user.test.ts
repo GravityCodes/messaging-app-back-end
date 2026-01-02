@@ -14,6 +14,8 @@ test('truthy resolves to true', () => {
   expect(true).toBe(true);
 });
 
+// TODO: Add unit testing 
+
 test("user gets created", async () => {
   const res = await request(app)
     .post('/user/signup')
