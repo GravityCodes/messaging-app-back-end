@@ -31,4 +31,23 @@ const createUser = [
     .withMessage("Passwords must match"),
 ];
 
-export default { createUser };
+const loginUser = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email must not be empty")
+    .isEmail()
+    .withMessage("Email has incorrect format")
+    .custom(async (value) => {
+      const result = await prisma.user.findUnique({
+        where: { email: value },
+      });
+
+      if (!result) {
+        throw new Error("E-mail not found");
+      }
+    }),
+  body("password").notEmpty().withMessage("Password must not be empty"),
+];
+
+export default { createUser, loginUser };
