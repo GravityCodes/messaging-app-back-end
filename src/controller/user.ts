@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import { validationResult } from "express-validator";
 import { Service } from "../services/user";
 import { Repository } from "../repositories/user";
 
@@ -10,18 +9,17 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const loginUser = async (req: Request, res: Response) => {
-  //Login user.
+  try {
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errors: "An internal server error has occured. Please try again later",
+    });
+  }
 };
 
 const signupUser = async (req: Request, res: Response) => {
   try {
-    const result = validationResult(req);
-
-    if (!result.isEmpty()) {
-      console.error(result.array());
-      return res.status(400).json({ errors: result.array() });
-    }
-
     const { userName, email, password } = req.body;
 
     const user = service.createUser(userName, password, email);
@@ -30,7 +28,7 @@ const signupUser = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      errors: "An internal server error has occured. Please Try again later.",
+      errors: "An internal server error has occured. Please try again later.",
     });
   }
 };
