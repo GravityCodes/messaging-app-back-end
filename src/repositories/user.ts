@@ -17,4 +17,16 @@ export class Repository {
 
     return user;
   }
+
+  async findUser(
+    email: string
+  ): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        email
+      }
+    });
+
+    return user;
+  }
 }
