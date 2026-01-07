@@ -3,7 +3,7 @@ import app from "../app.js";
 import request from "supertest";
 import { prisma } from "../lib/prisma.js";
 
-const newUser = {
+const user = {
   userName: "JohanM",
   email: "test@gmail.com",
   password: "Pa$$word#1",
@@ -29,8 +29,16 @@ describe("User Route Integration Test", () => {
   });
 
   test("user gets created", async () => {
-    const res = await request(app).post("/user/signup").send(newUser);
+    const res = await request(app).post("/user/signup").send(user);
 
     expect(res.status).toBe(201);
+  });
+
+  test("User gets logged in", async () => {
+    const res = await request(app)
+      .post("/user/login")
+      .send({ email: user.email, password: user.password });
+
+    expect(res.status).toBe(200);
   });
 });
