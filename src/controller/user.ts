@@ -45,7 +45,7 @@ const signupUser = async (req: Request, res: Response) => {
   try {
     const { userName, email, password } = req.body;
 
-    const user = service.createUser(userName, password, email);
+    const user = await service.createUser(userName, password, email);
 
     return res.status(201).json({ user });
   } catch (error) {
