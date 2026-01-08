@@ -2,7 +2,14 @@ import { body } from "express-validator";
 import { prisma } from "../lib/prisma.js";
 
 const createUser = [
-  body("userName").trim().notEmpty().withMessage("User name must not be empty"),
+  body("userName")
+    .trim()
+    .notEmpty()
+    .withMessage("User name must not be empty")
+    .isLength({ max: 12 })
+    .withMessage("User name is too long")
+    .isLength({ min: 3 })
+    .withMessage("User name is too short"),
   body("email")
     .trim()
     .notEmpty()
@@ -50,4 +57,8 @@ const loginUser = [
   body("password").notEmpty().withMessage("Password must not be empty"),
 ];
 
+
+const updateUser = [
+  body()
+];
 export default { createUser, loginUser };
