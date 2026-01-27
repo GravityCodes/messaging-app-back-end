@@ -57,8 +57,15 @@ const loginUser = [
   body("password").notEmpty().withMessage("Password must not be empty"),
 ];
 
-
 const updateUser = [
-  body()
+  body("userName")
+    .trim()
+    .notEmpty()
+    .withMessage("User name must not be empty")
+    .isLength({ max: 12 })
+    .withMessage("User name is too long")
+    .isLength({ min: 3 })
+    .withMessage("User name is too short"),
 ];
-export default { createUser, loginUser };
+
+export default { createUser, loginUser, updateUser };
