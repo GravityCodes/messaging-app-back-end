@@ -13,28 +13,24 @@ const validateImages = (req: Request, res: Response, next: NextFunction) => {
   const banner = files["banner"]?.[0];
 
   if (!profile && !banner) {
-    return res.status(400).json({ error: "profile or banner image not found" });
+    return next();
   }
 
   if (typeof profile != "undefined") {
     if (profile.mimetype != "image/jpeg" && profile.mimetype != "image/png") {
-      return res
-        .status(415)
-        .json({
-          errors:
-            "The media format is not supported. Please use a jpeg or png image.",
-        });
+      return res.status(415).json({
+        errors:
+          "The media format is not supported. Please use a jpeg or png image.",
+      });
     }
   }
 
   if (typeof banner != "undefined") {
     if (banner.mimetype != "image/jpeg" && banner.mimetype != "image/png") {
-      return res
-        .status(415)
-        .json({
-          errors:
-            "The media format is not supported. Please use a jpeg or png image.",
-        });
+      return res.status(415).json({
+        errors:
+          "The media format is not supported. Please use a jpeg or png image.",
+      });
     }
   }
 
