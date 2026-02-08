@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { Repository } from "../repositories/user";
-import { hashPassword, checkPassword } from "../utils/password";
+import { Repository } from "../repositories/user.js";
+import { hashPassword, checkPassword } from "../utils/password.js";
 import jwt from "jsonwebtoken";
 
 interface user {
@@ -35,6 +35,22 @@ export class Service {
     if (!checkPassword(password, user.password)) {
       return false;
     }
+
+    return user;
+  }
+
+  async updateUserProfile(
+    profileImage: Express.Multer.File | undefined,
+    bannerImage: Express.Multer.File | undefined,
+    userName: string | undefined,
+    id: number,
+  ) {
+    const user = await this.repo.updateUser(
+      profileImage,
+      bannerImage,
+      userName,
+      id,
+    );
 
     return user;
   }
