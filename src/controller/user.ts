@@ -41,6 +41,17 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+const logoutUser = (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    sameSite: 'strict',
+    httpOnly: true,
+    domain: process.env.DOMAIN,
+    secure: process.env.NODE_ENV === "production"
+  });
+
+  res.status(200).json({ msg: "User has been logged out" });
+}
+
 const signupUser = async (req: Request, res: Response) => {
   try {
     const { userName, email, password } = req.body;
@@ -83,4 +94,4 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export default { getUser, loginUser, signupUser, updateUser };
+export default { getUser, loginUser, signupUser, updateUser, logoutUser };

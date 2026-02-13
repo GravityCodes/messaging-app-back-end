@@ -22,6 +22,10 @@ route.post(
   validateRequest,
   controller.signupUser,
 );
+route.post(
+  "/logout",
+  controller.logoutUser
+);
 route.put(
   "/update",
   verifyUserToken,
