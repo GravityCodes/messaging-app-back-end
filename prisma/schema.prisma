@@ -22,8 +22,8 @@ model Message {
   id         Int      @id @default(autoincrement())
   content    String
   createdAt  DateTime @default(now())
-  fromUserId Int
-  toUserId   Int
-  fromUser   User     @relation("MessagesSent", fields: [fromUserId], references: [id])
-  toUser     User     @relation("MessagesReceived", fields: [toUserId], references: [id])
+  fromUserId Int?
+  toUserId   Int?
+  fromUser   User?    @relation("MessagesSent", fields: [fromUserId], references: [id], onDelete: SetNull)
+  toUser     User?    @relation("MessagesReceived", fields: [toUserId], references: [id], onDelete: SetNull)
 }
