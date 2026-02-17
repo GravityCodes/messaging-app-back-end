@@ -11,6 +11,12 @@ interface user {
 export class Service {
   constructor(private repo: Repository) {}
 
+  async getAllUsers() {
+    const users = await this.repo.getAllUsers();
+
+    return users;
+  }
+
   async createUser(userName: string, password: string, email: string) {
     const hashedPassword = await hashPassword(password);
 
@@ -37,6 +43,11 @@ export class Service {
     }
 
     return user;
+  }
+
+  async removeUser(id: number) {
+    const deletedUser = this.repo.removeUser(id);
+    return deletedUser;
   }
 
   async updateUserProfile(

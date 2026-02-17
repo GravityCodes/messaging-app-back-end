@@ -22,10 +22,7 @@ route.post(
   validateRequest,
   controller.signupUser,
 );
-route.post(
-  "/logout",
-  controller.logoutUser
-);
+route.post("/logout", controller.logoutUser);
 route.put(
   "/update",
   verifyUserToken,
@@ -37,4 +34,6 @@ route.put(
   validator.updateUser,
   controller.updateUser,
 );
+route.delete("/", verifyUserToken, controller.removeUser);
+
 export default route;

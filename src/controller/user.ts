@@ -5,7 +5,15 @@ import { Repository } from "../repositories/user.js";
 const service = new Service(new Repository());
 
 const getUser = async (req: Request, res: Response) => {
-  return res.status(200).json({ msg: "User" });
+  try {
+    const users = await service.getAllUsers();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({
+      errors: "An internal server error has occured. Please try again later.",
+    });
+  }
 };
 
 const loginUser = async (req: Request, res: Response) => {
@@ -43,14 +51,14 @@ const loginUser = async (req: Request, res: Response) => {
 
 const logoutUser = (req: Request, res: Response) => {
   res.clearCookie("token", {
-    sameSite: 'strict',
+    sameSite: "strict",
     httpOnly: true,
     domain: process.env.DOMAIN,
-    secure: process.env.NODE_ENV === "production"
+    secure: process.env.NODE_ENV === "production",
   });
 
   res.status(200).json({ msg: "User has been logged out" });
-}
+};
 
 const signupUser = async (req: Request, res: Response) => {
   try {
@@ -94,4 +102,36 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export default { getUser, loginUser, signupUser, updateUser, logoutUser };
+const removeUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await service.checkUser(email, password);
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ errors: "The email or password is incorrect." });
+    }
+
+    const deletedUser = await service.removeUser(user.id);
+
+    return res
+      .status(200)
+      .json({ msg: "User succesfully deleted", deletedUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errors: "An internal server error has occured. Please try again later.",
+    });
+  }
+};
+
+export default {
+  getUser,
+  loginUser,
+  signupUser,
+  updateUser,
+  logoutUser,
+  removeUser,
+};

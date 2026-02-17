@@ -27,6 +27,12 @@ export class Repository {
     }
   }
 
+  async getAllUsers() {
+    const users = await prisma.user.findMany();
+    console.log(users);
+    return users;
+  }
+
   async createUser(
     userName: string,
     email: string,
@@ -102,5 +108,15 @@ export class Repository {
     });
 
     return user;
+  }
+
+  async removeUser(id: number) {
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deletedUser;
   }
 }
