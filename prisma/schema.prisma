@@ -8,22 +8,38 @@ datasource db {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  email            String    @unique
-  password         String
-  profilePicture   String?
-  banner           String?
-  userName         String
-  messagesSent     Message[] @relation("MessagesSent")
-  MessagesReceived Message[] @relation("MessagesReceived")
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
+  password       String
+  profilePicture String?
+  banner         String?
+  userName       String
+  messages       Message[]
+  chatRoomUsers  ChatRoomUser[]
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   content    String
+  createdAt  DateTime  @default(now())
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+  chatRoom   ChatRoom? @relation(fields: [chatRoomId], references: [id])
+  chatRoomId Int?
+}
+
+model ChatRoom {
+  id        Int            @id @default(autoincrement())
+  createdAt DateTime       @default(now())
+  users     ChatRoomUser[]
+  messages  Message[]
+}
+
+model ChatRoomUser {
+  id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now())
-  fromUserId Int?
-  toUserId   Int?
-  fromUser   User?    @relation("MessagesSent", fields: [fromUserId], references: [id], onDelete: SetNull)
-  toUser     User?    @relation("MessagesReceived", fields: [toUserId], references: [id], onDelete: SetNull)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId Int
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
 }
